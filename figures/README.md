@@ -14,6 +14,8 @@ figure2/
 
 ----
 
+If you want to generate the figures in the paper, please run the codes inside the corresponding subdirectories, as relative paths are used in the codes to load the data.
+
 ## Bugs and Questions
 
 If you find any bugs or have any questions, please contact Younghyun Oh (bio7420@gmail.com).
