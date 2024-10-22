@@ -51,7 +51,7 @@ xtickangle(45);
 % Select and load the appropriate colormap
 switch type
     case 'campbell'
-        clrData = '/combinelab/03_user/younghyun/04_software/colormaps/campbellColormap.mat';
+        clrData = '../../utils/colormaps/campbellColormap.mat';
         values = importdata(clrData);
         cyto_label = {'Prefrontal', 'Frontal', 'InterPrecentral', 'Precentral', ...
                       'Postcentral', 'InterPostcentral', 'Parietal', 'Visuopsychic', ...

@@ -2,7 +2,7 @@
 clear; close all; clc
 
 % Define paths
-data_path = '/combinelab/03_user/younghyun/01_project/01_HierarchyMapping/data';
+data_path = '../../data';
 data_file_EC = fullfile(data_path, 'MMP_resting_iEC.mat');
 
 % Import Data
@@ -17,7 +17,7 @@ hierarchyLevels = computeHierarchyLevels(signal_flow, 0.15);
 
 % plot the result
 surfaceplot(hierarchyLevels,'MMP','both','viridis')
-exportgraphics(gcf,'Figure4b.png','Resolution',2000)
+% exportgraphics(gcf,'Figure4b.png','Resolution',2000)
 
 %====================================%
 %% Figure 4c
@@ -27,7 +27,7 @@ exportgraphics(gcf,'Figure4b.png','Resolution',2000)
 data_file_PC = fullfile(data_path, 'MMP_PC1.mat');
 pc1 = importdata(data_file_PC);
 surfaceplot(pc1, 'MMP', 'both', 'pc1');  
-exportgraphics(gcf, 'Figure5c_pc1.png', 'Resolution', 2000);  
+% exportgraphics(gcf, 'Figure5c_pc1.png', 'Resolution', 2000);  
 
 % Normalize the data for the scatter plot
 range = max(pc1(:)) - min(pc1(:));  
@@ -71,19 +71,19 @@ mdl = fitlm(x1, y1);
 plot(x1, mdl.Fitted, 'k-');  
 
 % Save the figure
-savefig('Figure4c.fig');
+% savefig('Figure4c.fig');
 
 % Create a surface plot highlighting points above yLine and to the left of xLine
 z = zeros(360, 1);  
 z(HigherThanPC) = 1;  
 surfaceplot(z, 'MMP', 'both', 'viridis2');  
-exportgraphics(gcf, 'Figure4c_pc1_hierarchy_difference1.png', 'Resolution', 2000);  
+% exportgraphics(gcf, 'Figure4c_pc1_hierarchy_difference1.png', 'Resolution', 2000);  
 
 % Create a surface plot highlighting points below yLine and to the right of xLine
 z = zeros(360, 1); 
 z(LowerThanPC) = 1;
 surfaceplot(z, 'MMP', 'both', 'viridis2'); 
-exportgraphics(gcf, 'Figure4c_pc1_hierarchy_difference2.png', 'Resolution', 2000);  
+% exportgraphics(gcf, 'Figure4c_pc1_hierarchy_difference2.png', 'Resolution', 2000);  
 
 %====================================%
 %% Figure 4e
@@ -151,8 +151,8 @@ end
 plot_signal_flow(nModules, signal_flow_pos, signal_flow_neg)
 
 % Save the figure
-savefig(gcf, 'energyflow_27module_rest.fig');  % Save the figure in .fig format
-exportgraphics(gcf, 'energyflow_27module_rest.png', 'Resolution', 1200);  % Export the figure as a high-resolution PNG
+% savefig(gcf, 'energyflow_27module_rest.fig');  % Save the figure in .fig format
+% exportgraphics(gcf, 'energyflow_27module_rest.png', 'Resolution', 1200);  % Export the figure as a high-resolution PNG
 
 %% joy plot 
 nModules = 360;
@@ -220,5 +220,5 @@ box off;
 hold off;
 set(gca, 'Visible', 'off');  % Hide the axes 
 
-savefig(gcf, 'Figure4f_joy.fig');  
+% savefig(gcf, 'Figure4f_joy.fig');  
 

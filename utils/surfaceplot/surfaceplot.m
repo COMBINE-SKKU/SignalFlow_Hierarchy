@@ -1,8 +1,7 @@
 function surfaceplot(source,atlas,hemi,colormaptype)
 
 % set path
-addpath(genpath('/local_raid1/01_software/toolboxes/toolboxes/cifti-matlab/')); %Add path to the gifti read
-dir_atlas = '/combinelab/03_user/younghyun/04_software/surfaceplot/data';
+dir_atlas = '../../utils/surfaceplot/data';
 
 switch atlas
     case "MMP"
@@ -13,93 +12,56 @@ switch atlas
     %Schaefer 100
     aname = fullfile(dir_atlas,'/Schaefer2018_100Parcels_7Networks_order.dlabel.nii');
     rois = ft_read_cifti(aname).parcels;  
-    case "Markov"
-    dir_atlas = '/local_raid1/03_user/younghyun/02_data/parcellations';
-    aname1 = fullfile(dir_atlas,'MarkovCC12_M132_91-area.32k_fs_LR.dlabel.nii');
-    atlas1 = ft_read_cifti(aname1).x1;  
-    rois = atlas1;
 end
 
-if atlas == "Markov"
-    dir_struct = '/local_raid1/03_user/younghyun/01_project/yejin/macaque_HCP/data_primede/sub-032125/MNINonLinear/fsaverage_LR32k';
+% Load Atlas
+atlasroi = [ gifti(fullfile(dir_atlas, '100206.R.atlasroi.32k_fs_LR.shape.gii')).cdata; ...
+        gifti(fullfile(dir_atlas, '100206.R.atlasroi.32k_fs_LR.shape.gii')).cdata];
 
-    % Load Atlas
-    atlasroi = [gifti(fullfile(dir_struct, 'sub-032125.L.atlasroi.32k_fs_LR.shape.gii')).cdata;...
-                gifti(fullfile(dir_struct, 'sub-032125.R.atlasroi.32k_fs_LR.shape.gii')).cdata];
-    
-    file_name.left = 'sub-032125.L.very_inflated.32k_fs_LR.surf.gii';
-    file_name.right = 'sub-032125.R.very_inflated.32k_fs_LR.surf.gii';
-    
-    temp = gifti(fullfile(dir_struct, file_name.left));
-    vertices.left   = temp.vertices;
-    faces.left      = temp.faces;
-    clear temp;
+surf_type = 'very_inflated_MSMAll';
+file_name.left  = ['100206.L.', surf_type, '.32k_fs_LR.surf.gii'];
+file_name.right = ['100206.R.', surf_type, '.32k_fs_LR.surf.gii'];
 
-    temp = gifti(fullfile(dir_struct, file_name.right));
-    vertices.right   = temp.vertices;
-    faces.right      = temp.faces;
+temp = gifti(fullfile(dir_atlas, file_name.left));
+vertices.left   = temp.vertices;
+faces.left      = temp.faces;
+clear temp;
 
-    vertices.all    = [vertices.left];
-    faces.all       = [faces.left];
-    
-    Cmap = zeros(64984,1);
-    for i =1:182
-         ind = rois == i;
-        Cmap(ind,1) = source(i);
-    end
-    Cmap(atlasroi == 0) = 0;
-    
-else
-    % Load Atlas
-    atlasroi = [ gifti(fullfile(dir_atlas, '100206.R.atlasroi.32k_fs_LR.shape.gii')).cdata; ...
-            gifti(fullfile(dir_atlas, '100206.R.atlasroi.32k_fs_LR.shape.gii')).cdata];
+temp = gifti(fullfile(dir_atlas, file_name.right));
+vertices.right   = temp.vertices;
+faces.right      = temp.faces;
 
-    surf_type = 'very_inflated_MSMAll';
-    file_name.left  = ['100206.L.', surf_type, '.32k_fs_LR.surf.gii'];
-    file_name.right = ['100206.R.', surf_type, '.32k_fs_LR.surf.gii'];
+vertices.all    = [vertices.left; vertices.right];
+faces.all       = [faces.left; faces.right+size(vertices.left,1)];
 
-    temp = gifti(fullfile(dir_atlas, file_name.left));
-    vertices.left   = temp.vertices;
-    faces.left      = temp.faces;
-    clear temp;
+Cmap = zeros(64984,1);
 
-    temp = gifti(fullfile(dir_atlas, file_name.right));
-    vertices.right   = temp.vertices;
-    faces.right      = temp.faces;
-
-    vertices.all    = [vertices.left; vertices.right];
-    faces.all       = [faces.left; faces.right+size(vertices.left,1)];
-
-    Cmap = zeros(64984,1);
-
-    switch atlas
-        case "MMP"
-            for i =1:360
-                ind = rois == i;
-                Cmap(ind,1) = source(i);
-            end
-        case "Schaefer"
-            for i = 1:100
-                ind = rois == i;
-                Cmap(ind,1) = source(i);
-            end
-    end
-
-    Cmap(atlasroi == 0) = 0;
+switch atlas
+    case "MMP"
+        for i =1:360
+            ind = rois == i;
+            Cmap(ind,1) = source(i);
+        end
+    case "Schaefer"
+        for i = 1:100
+            ind = rois == i;
+            Cmap(ind,1) = source(i);
+        end
 end
+
+Cmap(atlasroi == 0) = 0;
 
 n = 100;
 switch colormaptype
     case 'viridis'
         clrs = viridis(n);
-%         clrs = slanCM('viridis');
         n = size(clrs,1);
     case 'viridis2'
         clrs = viridis2(n);    
     case 'BlRd'
         clrs = generateColorMap(Cmap(:),n);
     case 'Yeo7'
-        clrs = importdata('/combinelab/03_user/younghyun/01_project/01_IntegratedEC/data/7NetworksColors.mat')/255;
+        clrs = importdata('../../data/7NetworksColors.mat')/255;
         n = 8;
     case 'inferno'
         clrs = slanCM('inferno');
@@ -123,7 +85,7 @@ switch colormaptype
         clrs = pc1color;
         n = size(clrs,1);
     case 'module27'
-        clrs_temp = importdata('/combinelab/03_user/younghyun/01_project/01_HierarchyMapping/data/module27(ordered)clrs.mat');
+        clrs_temp = importdata('../../data/module27(ordered)clrs.mat');
         clrs = zeros(28,3);
         clrs(1,:) = [0.0039, 0.0039, 0.0039];
         clrs(2:end,:) = clrs_temp;
@@ -132,13 +94,10 @@ switch colormaptype
         clrs = MMPcolor;
         n = 23;
     case 'zone4'
-        clrs = importdata('/combinelab/03_user/younghyun/01_project/01_HierarchyMapping/data/cortical_zones_clrs.mat');
+        clrs = importdata('../../data/cortical_zones_clrs.mat');
         n=5;
 end
 
-
-% minval = min(Cmap(Cmap>0));
-% Cmap(Cmap==0) = minval;
 clr_IDs = round((Cmap-min(Cmap))/max(Cmap-min(Cmap))*(n-1))+1;
 plot_colors = clrs(clr_IDs,:);
 medial_wall = [128, 128, 128]./255;
@@ -151,7 +110,6 @@ plot_colors(medial_indices, :) = repmat(medial_wall, length(medial_indices), 1);
 
 
 plot_data_mf_w_borders = plot_HCP_boundaries(plot_colors,'black',atlas);
-% plot_data_mf_w_borders = plot_colors;
 switch hemi
     case 'both'
 

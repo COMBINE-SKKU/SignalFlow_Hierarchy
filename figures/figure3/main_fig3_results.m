@@ -54,7 +54,7 @@ imagesc(EC_sorted);
 colormap(generateColorMap(EC(:), 1000));
 axis square;
 set(gca, 'XTick', [], 'YTick', []);
-savefig('Figure3a.fig');
+% savefig('Figure3a.fig');
 
 %====================================%
 %% Figure 3b
@@ -104,8 +104,8 @@ set(insetAxBar, 'XTickLabel', {'Neg', 'Pos'}, 'XTick', [1 2], 'ylim', [0 0.75], 
 box on
 
 % Save the figure with the insets
-savefig(gcf, 'Figure3b.fig');
-exportgraphics(gcf, 'Figure3b.png', 'Resolution', 2000);
+% savefig(gcf, 'Figure3b.fig');
+% exportgraphics(gcf, 'Figure3b.png', 'Resolution', 2000);
 
 %====================================%
 %% Figure 3c 
@@ -172,7 +172,7 @@ color_labels = [module_nums; module_nums];
 result = [array2table([reshaped_vals, color_labels]), cell2table(reshaped_labels)];
 
 % Save the resulting table to a .mat file
-save('Figure3c.mat', 'result');
+% save('Figure3c.mat', 'result');
 
 
 %====================================%
@@ -195,8 +195,8 @@ end
 plot_signal_flow(nModules, signal_flow_pos, signal_flow_neg)
 
 % Save the figure
-savefig(gcf, 'energyflow_22module_rest.fig');  % Save the figure in .fig format
-exportgraphics(gcf, 'energyflow_22module_rest.png', 'Resolution', 1200);  % Export the figure as a high-resolution PNG
+% savefig(gcf, 'energyflow_22module_rest.fig');  % Save the figure in .fig format
+% exportgraphics(gcf, 'energyflow_22module_rest.png', 'Resolution', 1200);  % Export the figure as a high-resolution PNG
 
 %====================================%
 %% Figure 3e
@@ -248,6 +248,6 @@ Legend = [temp1; temp2; temp3; temp4; temp5; temp6; temp7; temp8];  % Combine al
 result = [array2table(Data), cell2table([xGroup Legend])];
 
 % Save the result table to a .mat file
-save('Figure3e.mat', 'result');
+% save('Figure3e.mat', 'result');
 
 

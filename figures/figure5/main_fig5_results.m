@@ -2,7 +2,7 @@
 clear; close all; clc
 
 % Define paths
-data_path = '/combinelab/03_user/younghyun/01_project/01_HierarchyMapping/data';
+data_path = '../../data';
 EC_rest = importdata(fullfile(data_path, 'MMP_resting_iEC.mat'));
 
 % Import Data
@@ -22,11 +22,11 @@ hierarchyPain = computeHierarchyLevels(EC_pain, 0.15);
 
 % plot the result
 surfaceplot(hierarchyRest,'MMP','both','viridis')
-exportgraphics(gcf,'Figure5aMovie.png','Resolution',2000)
+% exportgraphics(gcf,'Figure5aMovie.png','Resolution',2000)
 
 % plot the result
 surfaceplot(hierarchyPain,'MMP','both','viridis')
-exportgraphics(gcf,'Figure5aPain.png','Resolution',2000)
+% exportgraphics(gcf,'Figure5aPain.png','Resolution',2000)
 
 %====================================%
 %% Figure 5b
@@ -35,7 +35,7 @@ exportgraphics(gcf,'Figure5aPain.png','Resolution',2000)
 % Import Cortical Zones Atlas
 CortZones = importdata(fullfile(data_path,'/cortical_zones.mat'));
 surfaceplot(CortZones,'MMP','both','zone4')
-exportgraphics(gcf,'Figure5b(brainmap).png','Resolution',2000)
+% exportgraphics(gcf,'Figure5b(brainmap).png','Resolution',2000)
 
 % Assuming rest_hierarchyLevels, pain_hierarchyLevels, and movie_hierarchyLevels are defined
 rest_ratio = zeros(4,1);
@@ -74,7 +74,7 @@ xticklabels({'primary', 'unimodal', 'heteromodal', 'limbic'});
 title('Median Hierarchy Levels');
 xlabel('Brain Region Categories');
 ylabel('Hierarchy Level');
-savefig('Figure5b.fig')
+% savefig('Figure5b.fig')
 
 %====================================%
 %% Figure 5c
@@ -107,7 +107,7 @@ end
 plot_signal_flow(nModules, signal_flow_pos_pain, signal_flow_neg_pain)
 
 % Save the figure
-savefig(gcf, 'energyflow_27module_pain.fig');  % Save the figure in .fig format
+% savefig(gcf, 'energyflow_27module_pain.fig');  % Save the figure in .fig format
 
 % ----------------------------- Movie Signal Flow ----------------------------- %
 
@@ -124,7 +124,7 @@ end
 plot_signal_flow(nModules, signal_flow_pos_movie, signal_flow_neg_movie)
 
 % Save the figure
-savefig(gcf, 'energyflow_27module_movie.fig');  % Save the figure in .fig format
+% savefig(gcf, 'energyflow_27module_movie.fig');  % Save the figure in .fig format
 
 %====================================%
 %% Delta lines for the signal flow

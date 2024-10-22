@@ -1,9 +1,23 @@
 function hierarchyLevels = computeHierarchyLevels(EC, thresholdValue)
-    % This function computes the hierarchy levels of a given square matrix (EC)
-    % based on a threshold value. The process involves creating a binary adjacency
-    % matrix, constructing a directed graph, computing incidence matrix, solving
-    % for linear regression estimates, and normalizing these estimates to a specific
-    % range to determine hierarchy levels.
+% COMPUTEHIERARCHYLEVELS computes the hierarchy levels of a given square matrix
+%   HIERARCHYLEVELS = COMPUTEHIERARCHYLEVELS(EC, THRESHOLDVALUE) returns
+%   an N-by-1 vector HIERARCHYLEVELS containing the computed hierarchy levels
+%   based on the input square matrix EC and a specified threshold value.
+%
+%   Parameters:
+%   EC              A square matrix representing the connectivity data.
+%   thresholdValue  A scalar value used to threshold the input matrix.
+%
+%   This function involves creating a binary adjacency matrix, constructing
+%   a directed graph, computing an incidence matrix, solving for linear
+%   regression estimates, and normalizing these estimates to determine
+%   hierarchy levels.
+%
+%   Example usage:
+%   hierarchyLevels = computeHierarchyLevels(EC, 0.5);
+%
+%   Author: Younghyun Oh
+%   Date: 2024-07-31
 
     % Validate input dimensions
     if size(EC, 1) ~= size(EC, 2)
