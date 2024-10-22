@@ -13,7 +13,7 @@ EC = importdata(data_file_EC);
 %====================================%
 
 % compute hierarchical levels
-hierarchyLevels = computeHierarchyLevels(signal_flow, 0.15);
+hierarchyLevels = computeHierarchyLevels(EC, 0.15);
 
 % plot the result
 surfaceplot(hierarchyLevels,'MMP','both','viridis')
