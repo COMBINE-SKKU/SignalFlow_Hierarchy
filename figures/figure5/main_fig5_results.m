@@ -37,7 +37,6 @@ CortZones = importdata(fullfile(data_path,'/cortical_zones.mat'));
 surfaceplot(CortZones,'MMP','both','zone4')
 % exportgraphics(gcf,'Figure5b(brainmap).png','Resolution',2000)
 
-% Assuming rest_hierarchyLevels, pain_hierarchyLevels, and movie_hierarchyLevels are defined
 rest_ratio = zeros(4,1);
 pain_ratio = zeros(4,1);
 movie_ratio = zeros(4,1);
