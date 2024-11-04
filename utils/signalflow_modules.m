@@ -16,10 +16,10 @@ function [signal_flow_neg, signal_flow_pos] = signalflow_modules(EC, roi, module
     % Load the appropriate module information based on the module_type input
     switch module_type
         case '22modules'
-            modules = importdata('/combinelab/03_user/younghyun/01_project/01_HierarchyMapping/data/module.txt');
+            modules = importdata('/../../data/module.txt');
             num_modules = 22;
         case '27modules'
-            modules = importdata('/combinelab/03_user/younghyun/01_project/01_HierarchyMapping/data/module27(ordered).mat');
+            modules = importdata('/../../data/module27(ordered).mat');
             num_modules = 27;
         case 'nomodule'
             modules = 1:360;
