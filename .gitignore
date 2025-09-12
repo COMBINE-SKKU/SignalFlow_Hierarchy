@@ -1,0 +1,24 @@
+# Ignore archive directories
+archive/
+*/archive/
+**/archive/
+
+# Ignore results directories
+results/
+*/results/
+**/results/
+
+# MATLAB temporary files
+*.asv
+*.m~
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+*.txt
+
+# Data files (uncomment if needed)
+# *.mat

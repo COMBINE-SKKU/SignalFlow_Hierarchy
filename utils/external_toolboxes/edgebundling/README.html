@@ -1,0 +1,340 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Divided edge bundling for Matlab</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-06-05"><meta name="DC.source" content="./readmeExtras/README.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Divided edge bundling for Matlab</h1><!--introduction--><p>Author: Kelly Kearney</p><p>This repository includes the code for the <tt>debundle.m</tt> and <tt>plotdeb.m</tt> Matlab functions, along with all dependent functions required to run them.</p><p>These two functions replicate the divided edge bundling algorithm, which provides an edge-routing method to declutter complex directional network graphs while highlighting major directional edge pathways.  The algorithm, which is an extention of force-directed edge bundling, was developed by David Selassie and is described in the following paper:</p><p>- Selassie D, Heller B, Heer J (2011) Divided edge bundling for directional network data. IEEE Trans Vis Comput Graph 17:2354-2363</p><p>Please note that I am not a coauthor on this paper; I simply coded this Matlab version so I could incorporate the divided edge bundling algorithm into my own research.  While I would appreciate acknowledgement if you happen to use this particular implementation of the algorithm, please be sure to cite Salassie's paper as the primary citation.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Getting started</a></li><li><a href="#2">Syntax</a></li><li><a href="#3">Example</a></li><li><a href="#10">Contributions</a></li></ul></div><h2 id="1">Getting started</h2><p><b>Prerequisites</b></p><p>This function requires Matlab R2015b or later.</p><p><b>Downloading and installation</b></p><p>This code can be downloaded from <a href="https://github.com/kakearney/divedgebundle-pkg/">Github</a>.</p><p><b>Matlab Search Path</b></p><p>The following folders need to be added to your Matlab Search path (via <tt>addpath</tt>, <tt>pathtool</tt>, etc.):</p><pre class="language-matlab">divedgebundle-pkg/ConsoleProgressBar
+divedgebundle-pkg/InterPointDistanceMatrix
+divedgebundle-pkg/aggregate
+divedgebundle-pkg/catuneven
+divedgebundle-pkg/divedgebundle
+divedgebundle-pkg/interparc
+divedgebundle-pkg/minmax
+divedgebundle-pkg/singlepatch
+</pre><h2 id="2">Syntax</h2><p><tt>Gnew = debundle(G)</tt> calculates bundled edge pathways based on the exisiting digraph <tt>G</tt>.  The Node table in <tt>G</tt> must include Name, x, and y properties for each node, and the Edge table in <tt>G</tt> must include EndNodes and Weight for each edge.  The output digraph <tt>Gnew</tt> will be identical to <tt>G</tt> but with x, y, and BundleCompat properties added to the Edge table.</p><p><tt>Gnew = debundle(G, Name, Value, ...)</tt> adjusts the edge bundling calculation parameters.  See function help for a list of named parameters.</p><p><tt>plotdeb(Gnew)</tt> plots the edges of an edge-bundled digraph as color-transitioning patches with widths corresponding to bundle weight.</p><p><tt>h = plotdeb(Gnew)</tt> returns the handle of the plotted patch object.</p><h2 id="3">Example</h2><p>This example will use the 3 x 3 example from the Selassie 2011 paper (used in Figures 7, 8, and 9 of the paper).  It consists of two columns of 6 nodes each, with edges crisscrossing in both directions.</p><p>We'll start with lists of node coordinates and names, as well as source and target node names for each edge:</p><pre class="codeinput">x   = [  -50  -50  -50   50   50   50  -50  -50  -50   50   50   50];
+y   = [    0  -10  -20    0  -10  -20  -30  -40  -50  -30  -40  -50];
+id  = {  <span class="string">'0'</span>  <span class="string">'1'</span>  <span class="string">'2'</span> <span class="string">'3b'</span> <span class="string">'4b'</span> <span class="string">'5b'</span> <span class="string">'0b'</span> <span class="string">'1b'</span> <span class="string">'2b'</span>  <span class="string">'3'</span>  <span class="string">'4'</span>  <span class="string">'5'</span>};
+
+src = {  <span class="string">'0'</span>  <span class="string">'3'</span>  <span class="string">'3'</span>  <span class="string">'5'</span>  <span class="string">'5'</span>  <span class="string">'4'</span> <span class="string">'3b'</span> <span class="string">'4b'</span> <span class="string">'5b'</span> <span class="string">'4b'</span> <span class="string">'1b'</span> <span class="string">'0b'</span> <span class="string">'4b'</span> <span class="string">'2b'</span>};
+tar = {  <span class="string">'5'</span>  <span class="string">'0'</span>  <span class="string">'1'</span>  <span class="string">'2'</span>  <span class="string">'0'</span>  <span class="string">'2'</span> <span class="string">'1b'</span> <span class="string">'1b'</span> <span class="string">'1b'</span> <span class="string">'0b'</span> <span class="string">'4b'</span> <span class="string">'5b'</span> <span class="string">'2b'</span> <span class="string">'5b'</span>};
+</pre><p>We can then use this information to build a Matlab digraph object.</p><pre class="codeinput">G = digraph(src, tar, ones(size(tar)))
+</pre><pre class="codeoutput">
+G = 
+
+  digraph with properties:
+
+    Edges: [14&times;2 table]
+    Nodes: [12&times;1 table]
+
+</pre><p>A regular Matlab digraph object doesn't include coordinates for its nodes, but the divided edge bundling algorithm will need this.  We can add the coordinates as new table variables under the the Nodes property of the diagraph object:</p><pre class="codeinput">[~,loc] = ismember(G.Nodes.Name, id);
+G.Nodes = [G.Nodes table(x(loc)', y(loc)', <span class="string">'variablenames'</span>, {<span class="string">'x'</span>,<span class="string">'y'</span>})];
+
+disp(<span class="string">'G Nodes table:'</span>);
+G.Nodes
+disp(<span class="string">'G Edges table:'</span>);
+G.Edges
+</pre><pre class="codeoutput">G Nodes table:
+
+ans =
+
+  12&times;3 table
+
+    Name     x      y 
+    ____    ___    ___
+
+    '0'     -50      0
+    '5'      50    -50
+    '3'      50    -30
+    '1'     -50    -10
+    '2'     -50    -20
+    '4'      50    -40
+    '3b'     50      0
+    '1b'    -50    -40
+    '4b'     50    -10
+    '5b'     50    -20
+    '0b'    -50    -30
+    '2b'    -50    -50
+
+G Edges table:
+
+ans =
+
+  14&times;2 table
+
+      EndNodes      Weight
+    ____________    ______
+
+    '0'     '5'       1   
+    '5'     '0'       1   
+    '5'     '2'       1   
+    '3'     '0'       1   
+    '3'     '1'       1   
+    '4'     '2'       1   
+    '3b'    '1b'      1   
+    '1b'    '4b'      1   
+    '4b'    '1b'      1   
+    '4b'    '0b'      1   
+    '4b'    '2b'      1   
+    '5b'    '1b'      1   
+    '0b'    '5b'      1   
+    '2b'    '5b'      1   
+
+</pre><p>Here's the resulting digraph, depicted using Matlab's built-in graph plotting function:</p><pre class="codeinput">h = plot(G, <span class="string">'XData'</span>, G.Nodes.x, <span class="string">'YData'</span>, G.Nodes.y, <span class="keyword">...</span>
+    <span class="string">'NodeColor'</span>, <span class="string">'r'</span>, <span class="string">'MarkerSize'</span>, 8);
+axis <span class="string">equal</span>;
+</pre><img vspace="5" hspace="5" src="./readmeExtras/README_01.png" alt=""> <p>Alternatively, we can plot the edges using <tt>plotdeb</tt> in initial mode, where the edges are just depicted as straight lines without any bundle weighting:</p><pre class="codeinput">he1 = plotdeb(G, <span class="string">'initial'</span>, true);
+set(h, <span class="string">'EdgeColor'</span>, <span class="string">'none'</span>);
+uistack(h, <span class="string">'top'</span>);
+
+cb = colorbar(<span class="string">'south'</span>);
+set(cb, <span class="string">'position'</span>, [0.2 0.2 0.2 0.02]);
+set(cb, <span class="string">'ticks'</span>, [0 1], <span class="string">'ticklabels'</span>, {<span class="string">'Source'</span>, <span class="string">'Target'</span>});
+</pre><img vspace="5" hspace="5" src="./readmeExtras/README_02.png" alt=""> <p>We can now run the divided edge bundling algorithm.  The code runs pretty quickly for a small graph like this example, but it can take a while for the calculations to complete when used on large, complex graphs.  The progress bars printed to the Command Window show the progress as the code preprocesses each edge and then runs 5 passes of the bundling calculation.</p><pre class="codeinput">G = debundle(G);
+</pre><pre class="codeoutput">Preprocessing...
+ 100% [=================================================&gt;]   14/  14
+ Elapsed time is 0.025201 seconds.
+Bundling...
+ Pass 1
+ 100% [=================================================&gt;] Pass 1: 29 of 29
+ Elapsed time is 0.060900 seconds.
+ Pass 2
+ 100% [=================================================&gt;] Pass 2: 29 of 29
+ Elapsed time is 0.125587 seconds.
+ Pass 3
+ 100% [=================================================&gt;] Pass 3: 29 of 29
+ Elapsed time is 0.254523 seconds.
+ Pass 4
+ 100% [=================================================&gt;] Pass 4: 29 of 29
+ Elapsed time is 0.442149 seconds.
+ Pass 5
+ 100% [=================================================&gt;] Pass 5: 29 of 29
+ Elapsed time is 0.882748 seconds.
+Postprocessing...
+Done
+</pre><p>We can plot the new bundled and weighted edges with the <tt>plotdeb</tt> function (and hide the old edges):</p><pre class="codeinput">delete(he1);
+he2 = plotdeb(G, <span class="string">'w'</span>, 5);
+uistack(h, <span class="string">'top'</span>);
+</pre><img vspace="5" hspace="5" src="./readmeExtras/README_03.png" alt=""> <h2 id="10">Contributions</h2><p>Community contributions to this package are welcome!</p><p>To report bugs, please submit <a href="https://github.com/kakearney/divedgebundle-pkg/issues">an issue</a> on GitHub and include:</p><div><ul><li>your operating system</li><li>your version of Matlab and all relevant toolboxes (type <tt>ver</tt> at the Matlab command line to get this info)</li><li>code/data to reproduce the error or buggy behavior, and the full text of any error messages received</li></ul></div><p>Please also feel free to submit enhancement requests, or to send pull requests (via GitHub) for bug fixes or new features.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Divided edge bundling for Matlab
+% Author: Kelly Kearney
+%
+% This repository includes the code for the |debundle.m| and |plotdeb.m| 
+% Matlab functions, along with all dependent functions required to run
+% them.
+%
+% These two functions replicate the divided edge bundling algorithm, which
+% provides an edge-routing method to declutter complex directional network
+% graphs while highlighting major directional edge pathways.  The
+% algorithm, which is an extention of force-directed edge bundling, was
+% developed by David Selassie and is described in the following paper: 
+%
+% - Selassie D, Heller B, Heer J (2011) Divided edge bundling for
+% directional network data. IEEE Trans Vis Comput Graph 17:2354-2363   
+%
+% Please note that I am not a coauthor on this paper; I simply coded this
+% Matlab version so I could incorporate the divided edge bundling
+% algorithm into my own research.  While I would appreciate acknowledgement
+% if you happen to use this particular implementation of the algorithm,
+% please be sure to cite Salassie's paper as the primary citation.
+
+%% Getting started
+%
+% *Prerequisites*
+%
+% This function requires Matlab R2015b or later.
+%
+% *Downloading and installation*
+%
+% This code can be downloaded from
+% <https://github.com/kakearney/divedgebundle-pkg/ Github>.
+%
+% *Matlab Search Path*
+%
+% The following folders need to be added to your Matlab Search path (via
+% |addpath|, |pathtool|, etc.):
+%
+%   divedgebundle-pkg/ConsoleProgressBar
+%   divedgebundle-pkg/InterPointDistanceMatrix
+%   divedgebundle-pkg/aggregate
+%   divedgebundle-pkg/catuneven
+%   divedgebundle-pkg/divedgebundle
+%   divedgebundle-pkg/interparc
+%   divedgebundle-pkg/minmax
+%   divedgebundle-pkg/singlepatch
+
+%% Syntax
+%
+% |Gnew = debundle(G)| calculates bundled edge pathways based on the
+% exisiting digraph |G|.  The Node table in |G| must include Name, x, and y
+% properties for each node, and the Edge table in |G| must include EndNodes
+% and Weight for each edge.  The output digraph |Gnew| will be identical to
+% |G| but with x, y, and BundleCompat properties added to the Edge table.  
+%
+% |Gnew = debundle(G, Name, Value, ...)| adjusts the edge bundling
+% calculation parameters.  See function help for a list of named
+% parameters.
+%
+% |plotdeb(Gnew)| plots the edges of an edge-bundled digraph as
+% color-transitioning patches with widths corresponding to bundle weight.  
+%
+% |h = plotdeb(Gnew)| returns the handle of the plotted patch object.
+
+%% Example
+%
+% This example will use the 3 x 3 example from the Selassie 2011 paper
+% (used in Figures 7, 8, and 9 of the paper).  It consists of two columns
+% of 6 nodes each, with edges crisscrossing in both directions.
+%
+% We'll start with lists of node coordinates and names, as well as source
+% and target node names for each edge:
+
+x   = [  -50  -50  -50   50   50   50  -50  -50  -50   50   50   50];
+y   = [    0  -10  -20    0  -10  -20  -30  -40  -50  -30  -40  -50];
+id  = {  '0'  '1'  '2' '3b' '4b' '5b' '0b' '1b' '2b'  '3'  '4'  '5'};
+
+src = {  '0'  '3'  '3'  '5'  '5'  '4' '3b' '4b' '5b' '4b' '1b' '0b' '4b' '2b'};
+tar = {  '5'  '0'  '1'  '2'  '0'  '2' '1b' '1b' '1b' '0b' '4b' '5b' '2b' '5b'};
+
+%%
+% We can then use this information to build a Matlab digraph object.
+
+G = digraph(src, tar, ones(size(tar)))
+
+%%
+% A regular Matlab digraph object doesn't include coordinates for its
+% nodes, but the divided edge bundling algorithm will need this.  We can
+% add the coordinates as new table variables under the the Nodes property
+% of the diagraph object: 
+
+[~,loc] = ismember(G.Nodes.Name, id);
+G.Nodes = [G.Nodes table(x(loc)', y(loc)', 'variablenames', {'x','y'})];
+
+disp('G Nodes table:');
+G.Nodes
+disp('G Edges table:');
+G.Edges
+
+%%
+%
+% Here's the resulting digraph, depicted using Matlab's built-in graph
+% plotting function:
+
+h = plot(G, 'XData', G.Nodes.x, 'YData', G.Nodes.y, ...
+    'NodeColor', 'r', 'MarkerSize', 8);
+axis equal;
+
+%%
+%
+% Alternatively, we can plot the edges using |plotdeb| in initial mode,
+% where the edges are just depicted as straight lines without any bundle
+% weighting:
+
+he1 = plotdeb(G, 'initial', true);
+set(h, 'EdgeColor', 'none');
+uistack(h, 'top');
+
+cb = colorbar('south');
+set(cb, 'position', [0.2 0.2 0.2 0.02]);
+set(cb, 'ticks', [0 1], 'ticklabels', {'Source', 'Target'});
+
+%%
+% We can now run the divided edge bundling algorithm.  The code runs pretty
+% quickly for a small graph like this example, but it can take a while for
+% the calculations to complete when used on large, complex graphs.  The
+% progress bars printed to the Command Window show the progress as the code
+% preprocesses each edge and then runs 5 passes of the bundling
+% calculation.
+
+G = debundle(G);
+
+%%
+% We can plot the new bundled and weighted edges with the |plotdeb|
+% function (and hide the old edges):
+
+delete(he1);
+he2 = plotdeb(G, 'w', 5);
+uistack(h, 'top');
+
+%% Contributions
+%
+% Community contributions to this package are welcome!
+% 
+% To report bugs, please submit
+% <https://github.com/kakearney/divedgebundle-pkg/issues an issue> on GitHub and
+% include:  
+% 
+% * your operating system
+% * your version of Matlab and all relevant toolboxes (type |ver| at the Matlab command line to get this info)  
+% * code/data to reproduce the error or buggy behavior, and the full text of any error messages received 
+% 
+% Please also feel free to submit enhancement requests, or to send pull
+% requests (via GitHub) for bug fixes or new features. 
+
+
+
+##### SOURCE END #####
+--></body></html>

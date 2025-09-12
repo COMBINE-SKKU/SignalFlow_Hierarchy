@@ -1,0 +1,19 @@
+│   README.md
+│   rsHRF_get_parameters.m                
+│   rsHRF_knee_pt.m 
+│   rsHRF_estimation_FIR.m
+│   rsHRF_estimation_temporal_basis.m
+│
+│   
+├───input_BOLD_data
+│   └───sub_001
+│           processed_fmri_data_4D.nii
+│           
+└───output_HRF_Deconv
+    └───input_BOLD_data
+        └───sub_001
+                processed_fmri_data_4D_deconv.nii
+                processed_fmri_data_4D_FWHM.nii
+                processed_fmri_data_4D_Height.nii
+                processed_fmri_data_4D_hrf.mat
+                processed_fmri_data_4D_Time2peak.nii
