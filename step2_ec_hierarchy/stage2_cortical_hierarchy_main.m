@@ -139,7 +139,7 @@ cyto_labels = {'Konicortex', 'Eulaminate-III', 'Eulaminate-II', ...
                'Eulaminate-I', 'Dysgranular', 'Agranular'};
 
 % Generate boxplots for cytoarchitectonic groups
-plotCytoGroups(hierarchyLevels, corticalTypes, cyto_labels, 'tpl', NUM_CYTO_TYPES);
+plotCytoGroups(hierarchy_levels{6}, corticalTypes, cyto_labels, 'tpl', NUM_CYTO_TYPES);
 savefig(fullfile(result_dir, 'cyto_hierarchy_boxplot.fig'));
 
 % Prepare data for statistical analysis

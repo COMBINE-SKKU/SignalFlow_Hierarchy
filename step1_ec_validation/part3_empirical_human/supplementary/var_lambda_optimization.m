@@ -80,8 +80,8 @@ for lambda_idx = 1:num_lambdas
         
         % Load and process subject data
         fmri_data = importdata(fullfile(fmri_dir, sprintf('sub%d/rfMRI_REST1_LRRL_%s_TianLv1_hp2000_clean.csv', subject_number, parcellation)));
-        var_result = run_var(fmri_data, 600);
-        var_matrices(:,:,i) = var_result(33:end,33:end);
+        var_result = run_var(fmri_data(33:end,:), 1000);
+        var_matrices(:,:,i) = var_result;
     end
 
     % Statistical testing

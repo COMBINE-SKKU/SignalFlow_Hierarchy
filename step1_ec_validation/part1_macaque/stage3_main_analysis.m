@@ -21,6 +21,9 @@ clear; close all; clc
 % Load FLN
 base_dir = '/combinelab/03_user/younghyun/01_project/01_Signalflow_Hierarchy';
 main_dir = fullfile(base_dir, 'step1_ec_validation/part1_macaque');
+FLN_dir = fullfile(main_dir, 'data/FLN40.mat');
+FLN = importdata(FLN_dir);
+FLN = 1.2*FLN.^0.3; % log-linear transformation
 
 % Load EC results
 result_dir = fullfile(main_dir, 'results');
@@ -155,9 +158,9 @@ best_ind_alg = algorithms{best_ind_idx};
 vfl_corr = EC_correlation_values_FLN(:, 11);
 best_ind_corr = EC_correlation_values_FLN(:, best_ind_idx);
 
-% Perform Wilcoxon rank-sum test (also known as Mann-Whitney U test)
+% Perform Wilcoxon rank-sum test
 % Testing if VFL is significantly better than the best individual algorithm
-[p_val, h_val] = signrank(vfl_corr, best_ind_corr, 'tail', 'right');
+[p_val, h_val] = signrank(vfl_corr, best_ind_corr, 'tail', 'both');
 
 %% Visualize correlation values
 % close all
@@ -216,8 +219,8 @@ vfl_median = median(data(:,11));
 best_alg_median = median(data(:,best_alg_idx));
 
 % Perform statistical tests
-p_iec = ranksum(data(:,10), data(:,best_alg_idx), 'tail', 'right');
-p_vfl = ranksum(data(:,11), data(:,best_alg_idx), 'tail', 'right');
+p_iec = ranksum(data(:,10), data(:,best_alg_idx), 'tail', 'both');
+p_vfl = ranksum(data(:,11), data(:,best_alg_idx), 'tail', 'both');
 
 % Add significance brackets and markers
 y_max = max([iec_median, vfl_median, best_alg_median]) + 0.1;
@@ -272,7 +275,7 @@ for i = 1:length(threshold_values)
     binary_FLN = threshold_proportional(FLN, threshold_values(i)) > 0;
     
     iter = 1;  % Initialize counter for proper indexing
-    for j = 9:num_subjects
+    for j = 9:19
         for k = 1:length(algorithms)-1  % Regular algorithms
             alg = algorithms{k};
             binary_pred = threshold_proportional(ec_results(j).(alg), threshold_values(i)) > 0;
@@ -329,7 +332,7 @@ for i = 1:length(threshold_values)
     vfl_idx = size(F1_data_for_plot, 2);
     
     % Perform statistical test (Wilcoxon signed rank test, one-sided)
-    [p_val, ~] = signrank(F1_data_for_plot(:,best_alg_idx), F1_data_for_plot(:,vfl_idx), 'tail', 'left');
+    [p_val, ~] = signrank(F1_data_for_plot(:,best_alg_idx), F1_data_for_plot(:,vfl_idx), 'tail', 'both');
     
     % Create figure
     fig_f1 = figure('Position', [100 100 900 300]);
@@ -441,7 +444,7 @@ corr_val = corr(FLN(:), iec_vfl(:));
 % Customize appearance
 box on
 grid on
-set(gca, 'LineWidth', 1.5, 'TickDir', 'in', 'XTickLabel', [], 'YTickLabel', [])
+% set(gca, 'LineWidth', 1.5, 'TickDir', 'in', 'XTickLabel', [], 'YTickLabel', [])
 set(gca, 'XTick', linspace(min(get(gca, 'XTick')), max(get(gca, 'XTick')), 5))
 set(gca, 'YTick', linspace(min(get(gca, 'YTick')), max(get(gca, 'YTick')), 5))
 
@@ -450,7 +453,7 @@ xlim([min(iec_vfl(:)) max(iec_vfl(:))])
 ylim([min(FLN(:)) max(FLN(:))])
 
 % Save figure
-% exportgraphics(gcf, fullfile(main_dir, 'results/vfl_scatter.png'), 'Resolution', 1200);
+exportgraphics(gcf, fullfile(main_dir, 'results/bei_recovery.png'), 'Resolution', 1200);
 
 %% Create histogram showing VAR, FASK, LiNGAM contributions
 close all
@@ -988,7 +991,7 @@ if ~exist('group_mean_results', 'var')
     end
 end
 
-% Create a single figure for the histogram
+% Create a single figure for the histogrami
 figure('Position', [100 100 400 400]);
 
 % Define colors for each algorithm using the specified hex colors

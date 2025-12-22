@@ -5,10 +5,12 @@ Validates the iEC framework against macaque tract-tracing ground truth data to r
 ## Pipeline Overview
 
 ### Supplementary Analysis
-**File:** `supplementary_analysis.m`
+**Directory:** `supplementary`
 - Signal characteristics analysis (non-Gaussian structure, skewness comparison)
 - FLN bidirectionality measurement 
 - Algorithm parameter sensitivity (VAR lambda)
+- Leave-One-Out analysis for iEC model performance
+- Comparison of simulation model (Hopf vs. BEI)
 
 ### Stage 1: Run EC Algorithms
 **File:** `stage1_run_algorithms.m`
@@ -38,7 +40,6 @@ run('stage3_main_analysis.m')
 
 **For complete pipeline**:
 ```matlab
-run('supplementary_analysis.m')      % Optional
 run('stage1_run_algorithms.m')       % EC estimation  
 run('stage2_integrate.m')            % Integration
 run('stage3_main_analysis.m')        # Validation & figures

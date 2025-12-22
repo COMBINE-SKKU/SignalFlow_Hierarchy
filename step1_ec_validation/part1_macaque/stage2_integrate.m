@@ -77,6 +77,8 @@ end
 save(fullfile(result_dir, 'EC_betas.mat'), 'EC_betas', 'EC_betas_vfl');
 
 %% Create box plot for beta values
+EC_betas = importdata(fullfile(result_dir, 'EC_betas.mat')).EC_betas;
+EC_betas_vfl = importdata(fullfile(result_dir, 'EC_betas.mat')).EC_betas_vfl;
 close all
 
 % Create figure

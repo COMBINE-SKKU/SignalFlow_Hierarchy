@@ -276,7 +276,7 @@ savefig(gcf, fullfile(ec_dir, 'results', [parcellation, '_gof_comparison_boxplot
 
 % Run batch simulation for iEC_vfl
 fprintf('Running batch simulation for FC/FCD visualization...\n');
-[fc_sim_avg, fcd_sim_avg] = batch_simulation(iEC_vfl, 0.9, f_diff, TR, Tmax, num_sims);
+[fc_sim_avg, fcd_sim_avg] = batch_simulation(iEC_vfl, 0.7, f_diff, TR, Tmax, num_sims);
 
 % Prepare data for FC correlation scatter plot
 triu_ind_fc = find(triu(ones(size(fc_emp_test)), 1));
@@ -303,15 +303,16 @@ fprintf('FC correlation: r = %.3f\n', r_value);
 % Customize FC plot
 grid on;
 box on;
-set(gca, 'XTick', linspace(min(fc_emp_triu), max(fc_emp_triu), 4));
-set(gca, 'YTick', linspace(min(fc_sim_triu), max(fc_sim_triu), 4));
-set(gca, 'XTickLabel', [], 'YTickLabel', []);
+% set(gca, 'XTick', linspace(min(fc_emp_triu), max(fc_emp_triu), 4));
+% set(gca, 'YTick', linspace(min(fc_sim_triu), max(fc_sim_triu), 4));
+% set(gca, 'XTickLabel', [], 'YTickLabel', []);
 axis square;
+axis equal
 
 % Save FC plot
-% exportgraphics(gcf, fullfile(ec_dir, 'results', [parcellation, '_fc_correlation_scatter_iec.png']), 'Resolution', 1200);
+exportgraphics(gcf, fullfile(ec_dir, [parcellation, '_fc_correlation_scatter_iec_equal_axis.png']), 'Resolution', 1200);
 
-% Create FCD CDF comparison plot
+%% Create FCD CDF comparison plot
 figure('Position', [500 100 350 350]);
 
 % Plot CDFs
@@ -352,15 +353,16 @@ G = findOptimalParams(iEC_vfl_norm, f_diff, fc_emp_test, TR, Tmax, num_sims, tri
 td_matrix_iec = zeros(size(iEC_vfl_norm, 1), size(iEC_vfl_norm, 1), n_test);
 fprintf('Computing time delay matrices (this may take a while)...\n');
 parfor iter = 1:n_test
-    ts_iec = run_simulation(iEC_vfl_norm, G, f_diff, TR, Tmax, -0.01)';
+    ts_iec = run_simulation(iEC_vfl_norm, 1.43, f_diff, TR, Tmax, -0.01)';
     td_matrix_iec(:,:,iter) = calculate_lag_threads(ts_iec, TR);
 end
 lag_sim = mean(td_matrix_iec, 3);
+lag_sim = mean(lag_sim,1);
 
 % Create scatter plot for mean time lag comparison
 figure('Position', [100 100 350 350]);
-lag_data_flipped = -lag_data;
-lag_sim_flipped = -lag_sim; % flip the sign 
+lag_data_flipped = -lag_data';
+lag_sim_flipped = -lag_sim'; % flip the sign 
 scatter(lag_data_flipped, lag_sim_flipped, 20, [0.5 0.5 0.5], 'filled', 'MarkerFaceAlpha', 0.7);
 hold on;
 

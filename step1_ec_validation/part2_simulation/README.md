@@ -20,10 +20,12 @@ Tests iEC effectiveness on:
 ## Pipeline Overview
 
 ### Supplementary Analysis
-**File:** `supplementary_analysis.m`
+**Directory:** `supplementary`
 - Generates directed SC matrices using `randmio_dir_connected`
 - Compares topological properties (clustering, degree) 
 - Visualizes connectivity matrices and correlations
+- Visualizes Hopf model signal characteristics
+- Compared two simulation models (Hopf vs. BEI)
 
 ### Stage 1: Run Algorithms with Hopf Model
 **File:** `stage1_run_algorithms.m`

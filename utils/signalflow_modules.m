@@ -1,4 +1,4 @@
-function [signal_flow_neg, signal_flow_pos] = signalflow_modules(EC, roi, module_type)
+function [signal_flow_neg, signal_flow_pos] = signalflow_modules(EC, roi, module_type, hemisphere)
 % SIGNALFLOW_MODULES Computes the negative and positive signal flow for a specified ROI (region of interest) 
 % and module type.
 %
@@ -8,7 +8,7 @@ function [signal_flow_neg, signal_flow_pos] = signalflow_modules(EC, roi, module
 %       EC          - A square matrix representing effective connectivity (EC) data.
 %       roi         - The region of interest for which the signal flow is computed.
 %       module_type - A string specifying the module type ('22modules' or '26modules').
-%
+%       hemisphere - A string specifying for a single hemisphere or the whole brain ('left' or 'right' or 'both').
 %   Outputs:
 %       signal_flow_neg - A vector containing the mean negative signal flow for each module.
 %       signal_flow_pos - A vector containing the mean positive signal flow for each module.
@@ -29,11 +29,17 @@ switch module_type
         error('Invalid module type. Choose either "22modules" or "26modules".');
 end
 
+% If hemisphere is specified, filter the modules accordingly
+if strcmp(hemisphere, 'left')
+    modules = modules(1:180);
+end
+
 % Identify the indices corresponding to the given ROI in the modules
 seed = find(modules == roi);
 
+n_rois = size(EC,1);
 % Create a state vector with a 1 for the seed ROI and 0 elsewhere
-z = zeros(360, 1);
+z = zeros(n_rois, 1);
 z(seed) = 1;
 
 % Normalize the EC matrix and remove self-connections

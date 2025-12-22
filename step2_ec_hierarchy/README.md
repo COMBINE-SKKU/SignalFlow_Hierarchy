@@ -40,6 +40,6 @@ run('stage2_cortical_hierarchy_main.m') # Figure 5
 
 - **Figure 4**: Matrix visualization, edge distributions, network boxplots, signal flow
 - **Figure 5**: Hierarchy maps, PC1 correlation, cytoarchitecture validation, joy plots
-- **Supplementary**: Surface plots, statistical analysis results
+- **Supplementary**: Statistical analysis results
 
 Demonstrates that iEC reveals neurobiologically meaningful cortical hierarchy aligned with anatomical and functional organization principles.

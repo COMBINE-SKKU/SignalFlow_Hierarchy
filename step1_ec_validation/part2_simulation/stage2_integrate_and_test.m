@@ -264,8 +264,8 @@ iec2_median = median(EC_corr_values(:,10,atlas));
 best_alg_median = median(EC_corr_values(:,best_alg_idx,atlas));
 
 % Perform statistical tests
-p_iec = ranksum(EC_corr_values(:,9,atlas), EC_corr_values(:,best_alg_idx,atlas), 'tail', 'right');
-p_iec2 = ranksum(EC_corr_values(:,10,atlas), EC_corr_values(:,best_alg_idx,atlas), 'tail', 'right');
+p_iec = ranksum(EC_corr_values(:,9,atlas), EC_corr_values(:,best_alg_idx,atlas), 'tail', 'both');
+p_iec2 = ranksum(EC_corr_values(:,10,atlas), EC_corr_values(:,best_alg_idx,atlas), 'tail', 'both');
 
 % Add significance brackets and markers
 y_max = max([iec_median, iec2_median, best_alg_median]) + 0.1;

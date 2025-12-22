@@ -11,10 +11,11 @@ Validates the iEC framework using **human empirical fMRI data** from the Human C
 ## Pipeline Overview
 
 ### Supplementary Analysis
-**File:** `supplementary_analysis.m`
+**Directory:** `supplementary`
 - **VAR parameter optimization**: Tests lambda values 10-1000 on HCP subset
 - **Statistical validation**: t-tests with FDR correction on connectivity matrices
 - **Performance evaluation**: Goodness-of-fit using Hopf simulations
+- **Deconvolution test**: Investigate the impact of the HRF on EC estimation
 
 ### Stage 1: Data Preprocessing
 **File:** `stage1_data_preprocessing.m`

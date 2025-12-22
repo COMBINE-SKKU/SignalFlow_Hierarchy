@@ -49,7 +49,7 @@ function hierarchyLevels = computeHierarchyLevels(EC, thresholdValue)
 
     % Step 7: Solve the linear regression (OLS) equation using left division operator
     estimates = X\Y;
-
+   
     % Step 8: Winsorize the estimates at the 99th percentile
     percentile_cutoff = 99;
     upper_limit = prctile(estimates, percentile_cutoff);
