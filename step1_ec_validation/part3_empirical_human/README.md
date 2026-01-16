@@ -47,11 +47,13 @@ run('stage3_simulation_validation.m')
 
 **For complete pipeline**:
 ```matlab
-run('supplementary_analysis.m')          # Parameter optimization
-run('stage1_data_preprocessing.m')       # Data preprocessing  
-run('stage2_integration.m')              # Weight optimization + iEC
-run('stage3_simulation_validation.m')    # Validation + visualization
+run('supplementary_analysis.m')          % Parameter optimization
+run('stage1_data_preprocessing.m')       % Data preprocessing
+run('stage2_integration.m')              % Weight optimization + iEC
+run('stage3_simulation_validation.m')    % Validation + visualization
 ```
+
+**Expected Output**: Goodness-of-fit boxplots, FC/FCD comparison matrices, and time-delay analysis showing iEC outperforms individual EC algorithms.
 
 ## Important Notes
 

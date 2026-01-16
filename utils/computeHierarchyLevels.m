@@ -36,7 +36,7 @@ function hierarchyLevels = computeHierarchyLevels(EC, thresholdValue)
     X = incidence(G)';
 
     % Define indices for which hierarchy levels are set to zero
-    zero_indices = [1, 181];
+    zero_indices = [1, 51];
 
     % Step 4: Remove specific columns to adjust degrees of freedom
     X(:, zero_indices) = [];

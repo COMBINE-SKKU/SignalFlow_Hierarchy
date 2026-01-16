@@ -23,6 +23,15 @@ This directory validates the integrated effective connectivity (iEC) framework u
 - Validates iEC performance against individual algorithms using goodness-of-fit metrics
 - **Output**: Human empirical validation results and comparative analysis
 
+## Quick Start
+
+```matlab
+cd step1_ec_validation/part1_macaque
+run('stage3_main_analysis.m')    % Figure 2 - macaque validation
+```
+
+**Expected Output**: Figure 2 panels showing iEC validation against macaque tract-tracing ground truth, including correlation analysis and F1 score comparisons.
+
 ## Analysis Flow
 
 1. **Ground Truth Validation** (Part 1): Tests against known anatomical connectivity

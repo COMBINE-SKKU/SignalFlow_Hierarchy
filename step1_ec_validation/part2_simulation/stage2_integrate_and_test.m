@@ -32,6 +32,7 @@ atlases = {'Schaefer', 'MMP'};
 
 % Define algorithm names
 algorithms = {'rdcm', 'var', 'fask', 'ccd', 'boss', 'lingam', 'grasp', 'patel'};
+num_algorithms = length(algorithms);
 
 % Bayes algorithm names
 bayes_algs = {'fask', 'ccd', 'boss', 'lingam', 'grasp', 'patel'};
@@ -128,11 +129,39 @@ for i = 1:num_algorithms
         'MarkerFaceAlpha', 0.6, 'MarkerEdgeColor', 'white', 'MarkerEdgeAlpha', 0.5);
 end
 
+% Statistical comparison of beta values
+row_means = mean(plot_data_all, 1)';
+col_diff = plot_data_all - row_means';
+
+% Perform one-tailed t-test for each column vs zero
+nCols = size(plot_data_all, 1);
+pvals = zeros(1, nCols);
+
+for j = 1:nCols
+    [~, pvals(j)] = ttest(col_diff(j, :), 0, 'Tail', 'right');
+end
+
+% Apply FDR correction
+alpha = 0.05;
+[~, ~, ~, pvals_corrected] = fdr_bh(pvals, alpha, 'pdep', 'yes');
+significant_idx = find(pvals_corrected < alpha);
+
+% Add asterisks to significant boxes
+for i = 1:length(significant_idx)
+    idx = significant_idx(i);
+    alg_y = max(plot_data_all(idx,:)) + 0.03;
+    text(idx, alg_y, '*', 'HorizontalAlignment', 'center', 'FontSize', 12, 'FontWeight', 'bold');
+end
+
 % Customize plot appearance
 box on
 grid on
-set(gca, 'LineWidth', 1.5, 'TickDir', 'in', 'XTickLabel', [], 'YTickLabel', [])
-set(gca, 'YTick', linspace(min(get(gca, 'YTick')), max(get(gca, 'YTick')), 4))
+
+% Adjust y-axis limits to show data clearly
+ylim_current = ylim;
+ylim([ylim_current(1)-0.05, ylim_current(2)+0.07]);
+set(gca, 'YTick', linspace(min(get(gca, 'YTick')), max(get(gca, 'YTick')), 5))
+% set(gca, 'LineWidth', 1.5, 'TickDir', 'in', 'XTickLabel', [], 'YTickLabel', [])
 
 switch atlas_to_plot
     case 1

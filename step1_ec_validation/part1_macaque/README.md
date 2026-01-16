@@ -40,7 +40,9 @@ run('stage3_main_analysis.m')
 
 **For complete pipeline**:
 ```matlab
-run('stage1_run_algorithms.m')       % EC estimation  
+run('stage1_run_algorithms.m')       % EC estimation
 run('stage2_integrate.m')            % Integration
-run('stage3_main_analysis.m')        # Validation & figures
+run('stage3_main_analysis.m')        % Validation & figures
 ```
+
+**Expected Output**: Figure 2 panels showing iEC vs FLN correlation, algorithm comparison boxplots, F1 score analysis, and SLN validation results.

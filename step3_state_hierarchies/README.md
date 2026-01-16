@@ -21,6 +21,8 @@ cd step3_state_hierarchies
 run('stage1_main.m')    % Figure 6 components
 ```
 
+**Expected Output**: Figure 6 panels showing state-specific hierarchy maps, cortical zone comparisons, 27-module signal flow visualizations, and joy plots with significance markers.
+
 ## Key Analyses
 
 **State Comparison**: Hierarchy levels across cortical zones with error bars and significance testing

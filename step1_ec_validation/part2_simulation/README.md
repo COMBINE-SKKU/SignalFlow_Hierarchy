@@ -51,10 +51,12 @@ run('stage2_integrate_and_test.m')
 
 **For complete pipeline**:
 ```matlab
-run('supplementary_analysis.m')           # Generate directed SC
-run('stage1_run_algorithms.m')            # Hopf sims + EC estimation
-run('stage2_integrate_and_test.m')        # Integration + validation
+run('supplementary_analysis.m')           % Generate directed SC
+run('stage1_run_algorithms.m')            % Hopf sims + EC estimation
+run('stage2_integrate_and_test.m')        % Integration + validation
 ```
+
+**Expected Output**: Correlation boxplots comparing iEC vs individual algorithms, beta weight distributions, and statistical validation results across 100 directed SC variants.
 
 ## Output
 

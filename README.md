@@ -10,21 +10,45 @@ Understanding the principle of information flow across distributed brain network
 
 ## System Requirements
 
-**Operating System:** Linux (tested and validated)
+**Operating System:**
+- Linux (tested on Ubuntu 20.04, 22.04)
 - Windows and macOS may work but are not officially supported
 
 **Software Dependencies:**
-- **MATLAB R2020a or later** (core computational environment)
-- **Java Runtime Environment** (required for Tetrad-based causal discovery algorithms)
-- **[cifti-matlab toolbox](https://github.com/Washington-University/cifti-matlab)** (for HCP data processing)
+- **MATLAB R2020a or later** (tested on R2023a, R2024a)
+- **Java Runtime Environment 8+** (tested on OpenJDK 11; required for Tetrad-based causal discovery algorithms)
+- **[cifti-matlab toolbox](https://github.com/Washington-University/cifti-matlab)** v2.1.0 (for HCP data processing)
 - **XCode** (macOS users only, for rDCM C compilation)
 
-**Hardware Recommendations:**
-- **RAM:** ≥16GB (32GB+ recommended for large-scale analyses)
+**Hardware Requirements:**
+- **RAM:** ≥16GB (32GB+ recommended for MMP360 analyses)
 - **CPU:** Multi-core processor (parallel processing utilized)
 - **Storage:** ≥50GB free space for datasets and results
+- No specialized hardware required
 
 All specialized toolboxes and utilities are included in the `utils/` directory.
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/cocoanlab/Signalflow_Hierarchy.git
+   ```
+
+2. Download and install [cifti-matlab](https://github.com/Washington-University/cifti-matlab)
+
+3. Add paths in MATLAB:
+   ```matlab
+   addpath(genpath('/path/to/Signalflow_Hierarchy'));
+   addpath('/path/to/cifti-matlab');
+   ```
+
+4. Verify Java is accessible from MATLAB:
+   ```matlab
+   version -java  % Should return Java version
+   ```
+
+**Typical install time:** <5 minutes (excluding MATLAB installation)
 
 ## Project Structure
 
@@ -45,26 +69,74 @@ Each directory contains comprehensive README files with specific usage instructi
 
 **Signal Flow Mapping:** Unconstrained, data-driven discovery of directed information flow patterns across brain networks without requiring prior structural connectivity constraints.
 
-## Quick Start
+## Demo
 
-1. **Clone repository and add paths:**
+The demo replicates all main figures using pre-computed results.
+
+**Run the demo:**
+```matlab
+cd step1_ec_validation/part1_macaque
+run('stage3_main_analysis.m')           % Figure 2
+
+cd ../../step2_ec_hierarchy
+run('stage1_network_profile_main.m')    % Figure 4
+run('stage2_cortical_hierarchy_main.m') % Figure 5
+
+cd ../step3_state_hierarchies
+run('stage1_main.m')                    % Figure 6
+```
+
+**Expected output:**
+- Figure 2: iEC validation against macaque tract-tracing ground truth (correlation plots, F1 scores)
+- Figure 4: Network structure analysis (matrix visualization, edge distributions, signal flow)
+- Figure 5: Cortical hierarchy maps with cytoarchitectonic validation
+- Figure 6: State-dependent hierarchy reorganization across brain states
+
+**Expected run time:** ~10 minutes total on a standard desktop (Intel i7, 16GB RAM)
+
+Results are saved in each directory's `results/` folder.
+
+## Instructions for Use
+
+### Replicating Paper Results
+
+Run the demo commands above to generate all main figures from pre-computed iEC matrices.
+
+### Running Complete Pipeline
+
+To recompute EC estimates from raw data (requires significant computation time):
+
+```matlab
+% Step 1: EC validation
+cd step1_ec_validation/part1_macaque
+run('stage1_run_algorithms.m')          % ~2-4 hours
+run('stage2_integrate.m')
+run('stage3_main_analysis.m')
+
+% Step 2: Hierarchy analysis (uses pre-computed iEC)
+cd ../../step2_ec_hierarchy
+run('stage1_network_profile_main.m')
+run('stage2_cortical_hierarchy_main.m')
+```
+
+### Using Your Own Data
+
+To apply the iEC framework to custom fMRI data:
+
+1. **Prepare time series:** Extract ROI time series as a `[time x regions]` matrix
+2. **Run EC algorithms:**
    ```matlab
-   addpath(genpath('/path/to/Signalflow_Hierarchy'));
-   addpath('/path/to/cifti-matlab');  % Add cifti-matlab toolbox
+   addpath(genpath('ec_algorithms'));
+   ec_results = run_ec_algorithms(timeseries, TR);
+   ```
+3. **Integrate results:**
+   ```matlab
+   addpath(genpath('utils'));
+   iEC = integrate_ec(ec_results, weights);
+   ```
+4. **Compute hierarchy:**
+   ```matlab
+   hierarchy = computeHierarchyLevels(iEC);
    ```
 
-2. **Run validation analyses:**
-   ```matlab
-   % iEC framework validation (three approaches)
-   cd step1_ec_validation/part1_macaque; run('stage3_main_analysis.m');
-   cd ../part2_simulation; run('stage2_integrate_and_test.m');
-   cd ../part3_empirical_human; run('stage3_simulation_validation.m');
-   
-   % Cortical hierarchy analysis
-   cd ../../step2_ec_hierarchy; run('stage1_network_profile_main.m'); run('stage2_cortical_hierarchy_main.m');
-   
-   % State-dependent hierarchy analysis
-   cd ../step3_state_hierarchies; run('stage1_main.m');
-   ```
-
-3. **Results are saved in each directory's `results/` folder**
+See individual README files in each step directory for detailed parameter options.

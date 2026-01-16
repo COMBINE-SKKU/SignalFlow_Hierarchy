@@ -453,7 +453,7 @@ xlim([min(iec_vfl(:)) max(iec_vfl(:))])
 ylim([min(FLN(:)) max(FLN(:))])
 
 % Save figure
-exportgraphics(gcf, fullfile(main_dir, 'results/bei_recovery.png'), 'Resolution', 1200);
+% exportgraphics(gcf, fullfile(main_dir, 'results/bei_recovery.png'), 'Resolution', 1200);
 
 %% Create histogram showing VAR, FASK, LiNGAM contributions
 close all
@@ -546,7 +546,7 @@ histogram(non_zero_FLN, 'Normalization', 'probability', 'DisplayStyle', 'bar', '
 set(gca, 'FontSize', 12, 'LineWidth', 1.5, 'XTick', 0:0.3:max(non_zero_FLN), 'YTick', 0:0.1:1);
 set(gca, 'XTickLabel', [], 'YTickLabel', []);
 box off;
-exportgraphics(gcf, fullfile(main_dir, 'results', 'fln_distribution.png'), 'Resolution', 1200);
+% exportgraphics(gcf, fullfile(main_dir, 'results', 'fln_distribution.png'), 'Resolution', 1200);
 
 
 %--------------------------------------------------------------------------%
@@ -774,8 +774,8 @@ for alg = algorithms
     fprintf('%s: %.3f\n', alg{1}, correlations.(alg{1}));
 end
 
-% Create bar plot of correlations
-figure('Position', [100 100 950 300]);
+% Create stem plot of correlations
+figure('Position', [100 100 950 300]); % Slightly taller for labels
 
 % Extract correlation values in order
 corr_values = zeros(1, length(algorithms));
@@ -783,27 +783,46 @@ for i = 1:length(algorithms)
     corr_values(i) = correlations.(algorithms{i});
 end
 
-% Create bar plot
-b = bar(corr_values, 'FaceColor', [0.4 0.4 0.4], 'EdgeColor', 'none', 'BarWidth', 0.6);
+% Setup Axes Limits first (crucial for Stem plot baseline)
+y_min = min(corr_values) * 0.9;
+y_max = max(corr_values) * 1.05;
+% Ensure y_max doesn't exceed 1.0 significantly if values are correlations
+if max(corr_values) <= 1, y_max = 1.02; end
+
+% Create the Stem Plot
+h = stem(corr_values, 'filled');
+h.Color = [0.4 0.4 0.4];          % Stem line color (dark grey)
+h.LineWidth = 2.0;                % Thicker stems for visibility
+h.MarkerSize = 10;                % Large, clear markers
+h.MarkerFaceColor = [0.2 0.2 0.2];% Darker marker face for contrast
+h.MarkerEdgeColor = 'none';       % No edge for a clean "flat" look
+h.BaseValue = y_min;              % Make stems start from the bottom limit
+h.ShowBaseLine = 'off';           % Hide the horizontal baseline for a cleaner look
+
+% Customize Axes and Grid
 hold on;
+box off;           % Remove top/right border for a modern look
+grid on;           % Keep grid
+set(gca, 'Layer', 'top'); % Ensure dots/grid interactions look correct
 
-% Customize plot appearance
-box on;
-grid on;
-set(gca, 'XTick', 1:length(algorithms), ...
-    'XTickLabel', [], ...  % Remove x tick labels
-    'YTickLabel', [], ...  % Remove y tick labels
-    'FontSize', 12, ...
+% Axis ticks and Labels
+set(gca, ...
+    'XTick', 1:length(algorithms), ...
+    'XTickLabel', [], ...            % Remove x tick labels
+    'YTickLabel', [], ...            % Remove y tick labels
+    'XTickLabelRotation', 0, ...     % Keep horizontal if they fit
+    'YTick', linspace(y_min, 0.9, 4), ... % 5 pretty ticks
     'LineWidth', 1.5, ...
-    'GridAlpha', 0.15, ...
-    'YTick', linspace(min(corr_values)*0.9, max(corr_values)*1.1, 6)); % Sparser y ticks with 4 points
+    'TickDir', 'in', ...            % Ticks pointing out looks cleaner
+    'GridAlpha', 0.15);
 
-% Set y-axis limits with some padding
-ylim([min(corr_values)*0.9, max(corr_values)*1.1]);
-
+% Refine Limits
+xlim([0.5, length(algorithms) + 0.5]);
+ylim([y_min, y_max]);
+box on
 % Save figure
-% exportgraphics(gcf, fullfile(main_dir, 'supplementary/deconv_correlations.png'), ...
-%     'Resolution', 1200, 'BackgroundColor', 'white');
+exportgraphics(gcf, fullfile(main_dir, 'supplementary/deconv_correlations.png'), ...
+    'Resolution', 1200, 'BackgroundColor', 'white');
 
 %% Scatter plot of iEC before and after deconvolution
 close all
@@ -867,34 +886,73 @@ set(gca, 'LineWidth', 1.5, ...
 % exportgraphics(gcf, fullfile(main_dir, 'supplementary/iEC_deconv_comparison.png'), ...
 %     'Resolution', 1200, 'BackgroundColor', 'white');
 
-%% Calculate median correlation values for each algorithm
-median_corr_original = median(EC_correlation_values_FLN);
-median_corr_deconv = median(EC_correlation_values_FLN_deconv);
-
-% Calculate SEM for each algorithm
-sem_corr_original = std(EC_correlation_values_FLN) / sqrt(size(EC_correlation_values_FLN, 1));
-sem_corr_deconv = std(EC_correlation_values_FLN_deconv) / sqrt(size(EC_correlation_values_FLN_deconv, 1));
-
-% Calculate differences and SEM of differences
-diff_corr = median_corr_original - median_corr_deconv;
-sem_diff = sqrt(sem_corr_original.^2 + sem_corr_deconv.^2);
-
-% Create bar plot with SEM
-% Define algorithm names including integrated EC
+%% Data Preparation
+% Define algorithm names
 algorithms = {'rdcm', 'var', 'gc', 'fask', 'ccd', 'boss', 'lingam', 'grasp', 'patel'};
 all_algorithm_names = [algorithms, {'iec', 'vfl'}];
 
+% 1. Calculate the subject-wise difference (Original - Deconvolved)
+% This creates a matrix of size [n_subjects x n_algorithms]
+% Each dot in the plot will represent one value from this matrix.
+subject_diffs = EC_correlation_values_FLN - EC_correlation_values_FLN_deconv;
+
+[n_subjects, n_algos] = size(subject_diffs);
+
+% 2. Calculate Mean and SEM of these differences for the summary overlay
+mean_diff = mean(subject_diffs, 1);
+sem_diff = std(subject_diffs, 0, 1) / sqrt(n_subjects);
+
+%% Plotting (Jittered Dot Plot with Summary)
 figure('Position', [100 100 950 300]);
-bar(diff_corr, 'FaceColor', [0.5 0.5 0.5], 'EdgeColor', 'none', 'BarWidth', 0.6);
 hold on;
-errorbar(1:length(diff_corr), diff_corr, sem_diff, 'k', 'LineStyle', 'none', 'LineWidth', 1.5);
-set(gca, 'LineWidth', 1.5);
-set(gca, 'LineWidth', 1.5, 'TickDir', 'in', 'XTickLabel', [], 'YTickLabel', [])
-set(gca, 'YTick', linspace(min(get(gca, 'YTick')), max(get(gca, 'YTick')), 5))
+
+% --- A. Zero Reference Line ---
+% This is critical to show "Deviation from 0" clearly
+yline(0, '--k', 'LineWidth', 1.5);
+
+% --- B. Plot Individual Subject Dots (Jittered) ---
+jitter_width = 0.5;        % How wide the spread of dots is
+dot_size = 15;             % Size of the dots
+dot_color = [0.6 0.6 0.6]; % Grey color for background data
+dot_alpha = 0.4;           % Transparency (0 = invisible, 1 = solid)
+
+for i = 1:n_algos
+    % Generate random x-offsets centered around the integer index i
+    x_jitter = (rand(n_subjects, 1) - 0.5) * jitter_width;
+    x_positions = i + x_jitter;
+
+    % Plot raw data points as scattered dots
+    s = scatter(x_positions, subject_diffs(:, i), dot_size, dot_color, 'filled');
+    s.MarkerFaceAlpha = dot_alpha; % Apply transparency to see overlapping points
+end
+
+% --- C. Plot Summary Statistics (Mean + SEM) ---
+% 1. Vertical Error Bars (SEM)
+errorbar(1:n_algos, mean_diff, sem_diff, 'k', ...
+    'LineStyle', 'none', 'LineWidth', 1.5, 'CapSize', 0);
+
+% 2. Mean Marker (Thick Horizontal Line segment)
+% We simply plot a short line segment or a wide marker for the mean
+plot(1:n_algos, mean_diff, '_k', 'MarkerSize', 30, 'LineWidth', 3);
+
+%% Formatting
+xlim([0.5, n_algos + 0.5]);
+
+% Axes properties
+set(gca, 'LineWidth', 1.5, 'TickDir', 'in', 'Box', 'on');
+set(gca, 'XTick', 1:n_algos);
+% set(gca, 'XTickLabel', all_algorithm_names);
+set(gca, 'XTickLabel', []);
+% set(gca, 'YTickLabel', []);
+set(gca, 'FontSize', 12);
+% set(gca, 'XTickLabelRotation', 45); % Optional: Rotate labels for better fit
+
 grid on;
 
+hold off;
+
 % Save figure with transparent background
-exportgraphics(gca, fullfile(main_dir, 'supplementary', 'difference_barplot.png'), 'Resolution', 1200);
+% exportgraphics(gca, fullfile(main_dir, 'supplementary', 'differenceplot.png'), 'Resolution', 1200);
 
 %--------------------------------------------------------------------------%
 %% Compute pairwise correlations between all algorithms

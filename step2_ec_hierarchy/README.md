@@ -28,8 +28,10 @@ Hierarchy validation for **Figure 5**:
 ```matlab
 cd step2_ec_hierarchy
 run('stage1_network_profile_main.m')    % Figure 4
-run('stage2_cortical_hierarchy_main.m') # Figure 5  
+run('stage2_cortical_hierarchy_main.m')    % Figure 5
 ```
+
+**Expected Output**: Figure 4 (matrix visualization, edge distributions, network signal flow) and Figure 5 (hierarchy surface maps, PC1 correlation, cytoarchitecture validation, joy plots).
 
 ## Key Analyses
 
