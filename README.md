@@ -1,12 +1,29 @@
-## References
+# State-dependent signal flow hierarchy in the human cerebral cortex
 
-Oh YH, Ann YJ, Lee JJ, Ito T, Froudist-Walsh S, Paquola C, Milham M, Spreng RN, Margulies D, Bernhardt B, Woo CW, Hong SK. [**In vivo cartography of state-dependent signal flow hierarchy in the human cerebral cortex **], Arxiv 2024.
+Code and data for:
+
+Oh Y, Ann Y, Lee J-J, Ito T, Froudist-Walsh S, Paquola C, Milham M, Spreng RN, Margulies D, Bernhardt B, Woo C-W, Hong S-J. **State-dependent signal flow hierarchy in the human cerebral cortex.** *Nature Neuroscience* (2026). https://doi.org/10.1038/s41593-026-02389-8
+
+Published online 1 September 2026. Article page: https://www.nature.com/articles/s41593-026-02389-8
+
+If you use this code, please cite the paper:
+
+```bibtex
+@article{Oh2026SignalFlow,
+  title   = {State-dependent signal flow hierarchy in the human cerebral cortex},
+  author  = {Oh, Younghyun and Ann, Yejin and Lee, Jae-Joong and Ito, Takuya and Froudist-Walsh, Sean and Paquola, Casey and Milham, Michael and Spreng, R. Nathan and Margulies, Daniel and Bernhardt, Boris and Woo, Choong-Wan and Hong, Seok-Jun},
+  journal = {Nature Neuroscience},
+  year    = {2026},
+  doi     = {10.1038/s41593-026-02389-8},
+  url     = {https://www.nature.com/articles/s41593-026-02389-8}
+}
+```
 
 ----
 
-## Background (Abstract)
+## Abstract
 
-Understanding the principle of information flow across distributed brain networks is of paramount importance in neuroscience. Here, we introduce a novel neuroimaging framework leveraging integrated effective connectivity (iEC) and unconstrained signal flow mapping for data-driven discovery of the human cerebral functional hierarchy, one of the principal brain scaffolds for macroscale neural dynamics. Simulation and empirical validation demonstrated the high fidelity of iEC in recovering connectome directionality and its potential relationship with histologically defined feedforward and feedback pathways. Notably, the iEC-based hierarchy revealed a functional axis composed of sequentially ordered sensorimotor-association-paralimbic areas, a pattern supported by the Structural Model of laminar connectivity. This hierarchy was further demonstrated to flexibly reorganize according to brain state, elevating exteroceptive regions during external focus and interoceptive regions during an internally oriented state. Our study highlights the unique role of macroscale directed functional connections in uncovering a neurobiologically grounded, state-dependent signal flow hierarchy.
+Understanding how information flows across distributed brain networks is central to linking brain structure, dynamics and function. Here we present a neuroimaging framework that combines integrated effective connectivity (iEC) and unconstrained signal flow mapping for data-driven identification of human cerebral functional hierarchies. Simulations and empirical validation show that iEC recovers connectome directionality and aligns with histologically defined feedforward and feedback pathways. The iEC-derived hierarchy exhibits a monotonically increasing level along the axis where the sensorimotor, association and paralimbic areas are sequentially ordered, consistent with predictions from the structural model of laminar connectivity. This hierarchy is not fixed but flexibly reorganizes across brain states; it becomes flatter during externally oriented processing and steeper during internally focused conditions, reflecting increased engagement of interoceptive regions. Our study indicates that macroscale directed functional connectivity can reveal biologically grounded, state-dependent principles of signal flow in the human brain.
 
 ## System Requirements
 
@@ -32,14 +49,14 @@ All specialized toolboxes and utilities are included in the `utils/` directory.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/cocoanlab/Signalflow_Hierarchy.git
+   git clone https://github.com/COMBINE-SKKU/SignalFlow_Hierarchy.git
    ```
 
 2. Download and install [cifti-matlab](https://github.com/Washington-University/cifti-matlab)
 
 3. Add paths in MATLAB:
    ```matlab
-   addpath(genpath('/path/to/Signalflow_Hierarchy'));
+   addpath(genpath('/path/to/SignalFlow_Hierarchy'));
    addpath('/path/to/cifti-matlab');
    ```
 
