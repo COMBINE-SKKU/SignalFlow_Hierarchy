@@ -2,16 +2,23 @@ function [signal_flow_neg, signal_flow_pos] = signalflow_modules(EC, roi, module
 % SIGNALFLOW_MODULES Computes the negative and positive signal flow for a specified ROI (region of interest) 
 % and module type.
 %
-%   [signal_flow_neg, signal_flow_pos] = signalflow_modules(EC, roi, module_type)
+%   [signal_flow_neg, signal_flow_pos] = signalflow_modules(EC, roi, module_type, hemisphere)
 %
 %   Inputs:
 %       EC          - A square matrix representing effective connectivity (EC) data.
 %       roi         - The region of interest for which the signal flow is computed.
-%       module_type - A string specifying the module type ('22modules' or '26modules').
-%       hemisphere - A string specifying for a single hemisphere or the whole brain ('left' or 'right' or 'both').
+%       module_type - A string specifying the module type ('22modules', '27modules' or 'nomodule').
+%       hemisphere  - Optional: 'both' (default, the whole brain), 'right' or 'left'. MMP360 data here are right
+%                     hemisphere first (HCP dlabel keys 1-180 are right-hemisphere areas), so 'right' uses regions
+%                     1:180 and 'left' regions 181:360, and EC must then be that 180-region block. roi and module
+%                     numbers keep their whole-brain meaning.
 %   Outputs:
 %       signal_flow_neg - A vector containing the mean negative signal flow for each module.
 %       signal_flow_pos - A vector containing the mean positive signal flow for each module.
+
+if nargin < 4 || isempty(hemisphere)
+    hemisphere = 'both';
+end
 
 % Load the appropriate module information based on the module_type input
 data_path = '/combinelab/03_user/younghyun/01_project/01_Signalflow_Hierarchy/data';    
@@ -26,11 +33,13 @@ switch module_type
         modules = 1:360;
         num_modules = 360;
     otherwise
-        error('Invalid module type. Choose either "22modules" or "26modules".');
+        error('Invalid module type. Choose "22modules", "27modules" or "nomodule".');
 end
 
-% If hemisphere is specified, filter the modules accordingly
+% If a single hemisphere is specified, keep its module labels (MMP360 order: right 1:180, left 181:360)
 if strcmp(hemisphere, 'left')
+    modules = modules(181:360);
+elseif strcmp(hemisphere, 'right')
     modules = modules(1:180);
 end
 
@@ -58,7 +67,7 @@ for current_roi = 1:num_modules
     % Find the indices for the current ROI in the modules
     seed = find(modules == current_roi);
 
-    % Compute the mean positive s ignal flow for the current ROI
+    % Compute the mean positive signal flow for the current ROI
     signal_flow_pos(current_roi) = mean(max(signal(end, seed), 0));
 
     % Compute the mean negative signal flow for the current ROI

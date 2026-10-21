@@ -42,7 +42,8 @@ for atlas = 1:length(atlases)
     SC = importdata(fullfile(main_dir, 'data', [parcellation, '_SC.mat']));
     freq = importdata(fullfile(main_dir, 'data', [parcellation, '_peak_freq.mat']));
 
-    % Use single cortex
+    % Use single cortex: for MMP360 the stored 180-region SC is the right hemisphere (HCP dlabel keys
+    % 1-180 are right-hemisphere areas); for Schaefer100 it is the left (its 7-network order lists LH first).
     N = size(SC, 1);
     freq = freq(1:N);
 
@@ -113,7 +114,8 @@ for atlas = 1:length(atlases)
     SC = importdata(fullfile(main_dir, 'data', [parcellation, '_SC.mat']));
     freq = importdata(fullfile(main_dir, 'data', [parcellation, '_peak_freq.mat']));
 
-    % Use single cortex
+    % Use single cortex: for MMP360 the stored 180-region SC is the right hemisphere (HCP dlabel keys
+    % 1-180 are right-hemisphere areas); for Schaefer100 it is the left (its 7-network order lists LH first).
     N = size(SC, 1);
     freq = freq(1:N);
 

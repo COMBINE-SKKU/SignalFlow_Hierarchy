@@ -23,7 +23,8 @@ clear; close all; clc;
 % Define analysis parameters
 TAIL_ANALYSIS_PERCENT = 0.05;  % Top 5% for tail analysis
 NUM_HISTOGRAM_BINS = 100;      % Number of bins for histogram
-LEFT_CORTEX_REGIONS = 180;     % Number of left cortex regions
+% MMP360 regions 1:180 are the right hemisphere (HCP dlabel keys 1-180 are right-hemisphere areas).
+RIGHT_CORTEX_REGIONS = 180;    % Number of right cortex regions
 NUM_YEONETWORKS = 7;           % Number of Yeo networks
 NUM_MODULES_22 = 22;           % Number of 22-module parcellation
 
@@ -64,13 +65,13 @@ k = round(n * TAIL_ANALYSIS_PERCENT);  % Select top percentage for tail analysis
 % Call the TailWHill function
 [Hill, Hillsd, DJV1, DJV2, AM, AMsd, T1, T1sd, T2, T3, D, Dsd] = TailWHill(X_sorted, W_sorted, k);
 
-% Extract left cortex of iEC matrix
-iEC_left = iEC(1:LEFT_CORTEX_REGIONS, 1:LEFT_CORTEX_REGIONS);
-modules_left = modules(1:LEFT_CORTEX_REGIONS);
+% Extract the right cortex (regions 1:180) of the iEC matrix
+iEC_right = iEC(1:RIGHT_CORTEX_REGIONS, 1:RIGHT_CORTEX_REGIONS);
+modules_right = modules(1:RIGHT_CORTEX_REGIONS);
 
-% Sort out the left cortex according the the 7 networks
-[~, sortedIndices] = sort(modules_left);
-iEC_sorted = iEC_left(sortedIndices, sortedIndices);
+% Sort the right cortex according to the 7 networks
+[~, sortedIndices] = sort(modules_right);
+iEC_sorted = iEC_right(sortedIndices, sortedIndices);
 
 % Plot sorted iEC matrix
 figure('Position', [100, 100, 250, 250]);
@@ -98,7 +99,7 @@ mainAxLimits = axis(mainAx);
 % Position inset relative to the new figure size
 insetAxHist = axes('Position', [0.55 0.22 0.28 0.1]); 
 % Histogram for the inset, focusing on a specific range
-histogram(insetAxHist, iEC_left(:), 'BinLimits', [0.4, 0.8], 'FaceColor', '#808080', 'Normalization', 'probability');
+histogram(insetAxHist, iEC_right(:), 'BinLimits', [0.4, 0.8], 'FaceColor', '#808080', 'Normalization', 'probability');
 
 % Set the axis limits and ticks for the histogram inset
 set(insetAxHist, 'XLim', [0.4, 0.8], 'YLim', [0, 0.002]);

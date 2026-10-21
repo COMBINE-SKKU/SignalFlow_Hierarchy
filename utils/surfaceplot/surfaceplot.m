@@ -15,7 +15,8 @@ switch atlas
 end
 
 % Load Atlas
-atlasroi = [ gifti(fullfile(dir_atlas, '100206.R.atlasroi.32k_fs_LR.shape.gii')).cdata; ...
+% Medial-wall masks, left hemisphere then right: the same order as the surfaces below.
+atlasroi = [ gifti(fullfile(dir_atlas, '100206.L.atlasroi.32k_fs_LR.shape.gii')).cdata; ...
         gifti(fullfile(dir_atlas, '100206.R.atlasroi.32k_fs_LR.shape.gii')).cdata];
 
 surf_type = 'very_inflated_MSMAll';
@@ -38,6 +39,8 @@ Cmap = zeros(64984,1);
 
 switch atlas
     case "MMP360"
+        % source(i) is drawn on dlabel key i. In the HCP Glasser dlabel, keys 1-180 are right-hemisphere areas and
+        % 181-360 left, so source must be in that order (right hemisphere first), as all MMP360 data here are.
         for i =1:360
             ind = rois == i;
             Cmap(ind,1) = source(i);

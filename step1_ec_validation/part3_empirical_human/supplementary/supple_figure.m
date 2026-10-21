@@ -185,26 +185,26 @@ box on;
 grid on
 exportgraphics(gcf, 'boxplot_iEC_FC.png', 'Resolution', 1200);
 
-%% Figure 2: iEC matrix visualization - Left cortex only
+%% Figure 2: iEC matrix visualization - right cortex only (MMP360 regions 1:180)
 figure('Position', [100 100 400 400]);
-left_idx = 1:180;  % Left cortex indices
-left_iEC = iEC(left_idx, left_idx);  % Extract left cortex submatrix
-imagesc(left_iEC);  % Show only left cortex
-colormap(generateColorMap(left_iEC(:), 1000));
+right_idx = 1:180;  % Right cortex indices (HCP dlabel keys 1-180 are right-hemisphere areas)
+right_iEC = iEC(right_idx, right_idx);  % Extract right cortex submatrix
+imagesc(right_iEC);  % Show only right cortex
+colormap(generateColorMap(right_iEC(:), 1000));
 axis square;
 set(gca, 'XTickLabel', {}, 'YTickLabel', {}, 'XTick', [], 'YTick', []);
 set(gcf, 'Color', 'w');
-% exportgraphics(gcf, 'iEC_left_cortex.png', 'Resolution', 1200);
+% exportgraphics(gcf, 'iEC_right_cortex.png', 'Resolution', 1200);
 
-% Figure 3: ftract matrix visualization - Left cortex only
+% Figure 3: ftract matrix visualization - right cortex only (MMP360 regions 1:180)
 figure('Position', [100 100 400 400]);
-left_ftract = ftract(left_idx, left_idx);  % Extract left cortex submatrix
-imagesc(left_ftract);  % Show only left cortex
-colormap(generateColorMap(left_ftract(:), 1000));
+right_ftract = ftract(right_idx, right_idx);  % Extract right cortex submatrix
+imagesc(right_ftract);  % Show only right cortex
+colormap(generateColorMap(right_ftract(:), 1000));
 axis square;
 set(gca, 'XTickLabel', {}, 'YTickLabel', {}, 'XTick', [], 'YTick', []);
 set(gcf, 'Color', 'w');
-% exportgraphics(gcf, 'ftract_left_cortex.png', 'Resolution', 1200);
+% exportgraphics(gcf, 'ftract_right_cortex.png', 'Resolution', 1200);
 
 %% Compare iEC original vs. iEC symmetric using simulation
 f_diff = importdata(fullfile(data_dir, 'MMP360_peak_freq.mat'));
